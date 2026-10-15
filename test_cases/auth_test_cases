@@ -1,0 +1,219 @@
+# Test Cases: Auth API
+
+## Scope
+
+This document covers test cases for the Auth API
+
+## Base URL
+
+`https://restful-booker.herokuapp.com`
+
+## Endpoints covered
+
+- `POST /auth`
+
+# POST Auth test cases
+
+## Test case A-1: Create token with valid credentials
+**Endpoint:** `POST /auth`
+
+**Preconditions:**
+- Auth API is available
+- Valid credentials are known
+
+**Headers:**
+Content-Type: `application/json `
+**Body:**
+```
+{
+  "username": "admin",
+  "password": "password123"
+}
+```
+
+**Steps:**
+1. Send a `POST` request to `/auth`
+2. Check the response status code
+3. Check the response body structure
+
+**Expected Result:**
+- Status code is `200`
+- Response body contains a non-empty `token` field
+- Response body does not contain the `reason` field
+
+## Test case A-2: Create token with invalid username
+**Endpoint:** `POST /auth`
+
+**Preconditions:**
+- Auth API is available
+
+**Headers:**
+Content-Type: `application/json `
+**Body:**
+```
+{
+  "username": "notadmin",
+  "password": "password123"
+}
+```
+
+**Steps:**
+1. Send a `POST` request to `/auth`
+2. Check the response status code
+3. Check the response body structure
+
+**Expected Result:**
+- Status code is `200`
+- Response body contains the `reason` field with value `Bad credentials`
+- Response body does not contain the `token` field
+
+## Test case A-3: Create token with invalid password
+**Endpoint:** `POST /auth`
+
+**Preconditions:**
+- Auth API is available
+
+**Headers:**
+Content-Type: `application/json`\
+**Body:**
+```
+{
+  "username": "admin",
+  "password": "password12333"
+}
+```
+
+**Steps:**
+1. Send a `POST` request to `/auth`
+2. Check the response status code
+3. Check the response body structure
+
+**Expected Result:**
+- Status code is `200`
+- Response body contains the `reason` field with value `Bad credentials`
+- Response body does not contain the `token` field
+
+## Test case A-4: Create token with both invalid credentials
+**Endpoint:** `POST /auth`
+
+**Preconditions:**
+- Auth API is available
+
+**Headers:**
+Content-Type: `application/json`\
+**Body:**
+```
+{
+  "username": "administrator",
+  "password": "password123456"
+}
+```
+
+**Steps:**
+1. Send a `POST` request to `/auth`
+2. Check the response status code
+3. Check the response body structure
+
+**Expected Result:**
+- Status code is `200`
+- Response body contains the `reason` field with value `Bad credentials`
+- Response body does not contain the `token` field
+
+## Test case A-5: Create token without username
+**Endpoint:** `POST /auth`
+
+**Preconditions:**
+- Auth API is available
+
+**Headers:**
+Content-Type: `application/json`\
+**Body:**
+```
+{
+  "password": "password123"
+}
+```
+
+**Steps:**
+1. Send a `POST` request to `/auth`
+2. Check the response status code
+3. Check the response body structure
+
+**Expected Result:**
+- Status code is `200`
+- Response body contains the `reason` field with value `Bad credentials`
+- Response body does not contain the `token` field
+
+## Test case A-6: Create token without password
+**Endpoint:** `POST /auth`
+
+**Preconditions:**
+- Auth API is available
+
+**Headers:**
+Content-Type: `application/json`\
+**Body:**
+```
+{
+  "username": "admin"
+}
+```
+
+**Steps:**
+1. Send a `POST` request to `/auth`
+2. Check the response status code
+3. Check the response body structure
+
+**Expected Result:**
+- Status code is `200`
+- Response body contains the `reason` field with value `Bad credentials`
+- Response body does not contain the `token` field
+
+## Test case A-7: Create token with empty request body
+**Endpoint:** `POST /auth`
+
+**Preconditions:**
+- Auth API is available
+
+**Headers:**
+Content-Type: `application/json`\
+**Body:**
+```
+{}
+```
+
+**Steps:**
+1. Send a `POST` request to `/auth`
+2. Check the response status code
+3. Check the response body structure
+
+**Expected Result:**
+- Status code is `200`
+- Response body contains the `reason` field with value `Bad credentials`
+- Response body does not contain the `token` field
+
+## Test case A-8: Create token with unsupported Content-type
+**Endpoint:** `POST /auth`
+
+**Preconditions:**
+- Auth API is available
+
+**Headers:**
+Content-Type: `application/xml`
+**Body:**
+```
+{
+  "username": "admin",
+  "password": "password123"
+}
+```
+
+**Steps:**
+1. Send a `POST` request to `/auth`
+2. Check the response status code
+3. Check the response body structure
+
+**Expected Result:**
+- Status code is `400`
+- Response body contains the `reason` field with value `Bad credentials`
+- Response body does not contain the `token` field

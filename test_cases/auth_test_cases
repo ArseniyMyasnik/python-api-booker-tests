@@ -12,7 +12,7 @@ This document covers test cases for the Auth API
 
 - `POST /auth`
 
-# POST Auth test cases
+# POST /auth test cases
 
 ## Test case A-1: Create token with valid credentials
 **Endpoint:** `POST /auth`
@@ -22,7 +22,7 @@ This document covers test cases for the Auth API
 - Valid credentials are known
 
 **Headers:**
-Content-Type: `application/json `
+Content-Type: `application/json`
 **Body:**
 ```
 {
@@ -38,7 +38,9 @@ Content-Type: `application/json `
 
 **Expected Result:**
 - Status code is `200`
-- Response body contains a non-empty `token` field
+- Response body contains `token` field
+- `token` field contains a string
+- `token` field is a non-empty string
 - Response body does not contain the `reason` field
 
 ## Test case A-2: Create token with invalid username
@@ -48,7 +50,7 @@ Content-Type: `application/json `
 - Auth API is available
 
 **Headers:**
-Content-Type: `application/json `
+Content-Type: `application/json`
 **Body:**
 ```
 {
@@ -64,7 +66,8 @@ Content-Type: `application/json `
 
 **Expected Result:**
 - Status code is `200`
-- Response body contains the `reason` field with value `Bad credentials`
+- Response body contains the `reason` field
+- `reason` field has the value `Bad credentials`
 - Response body does not contain the `token` field
 
 ## Test case A-3: Create token with invalid password
@@ -74,7 +77,7 @@ Content-Type: `application/json `
 - Auth API is available
 
 **Headers:**
-Content-Type: `application/json`\
+Content-Type: `application/json`
 **Body:**
 ```
 {
@@ -90,7 +93,8 @@ Content-Type: `application/json`\
 
 **Expected Result:**
 - Status code is `200`
-- Response body contains the `reason` field with value `Bad credentials`
+- Response body contains the `reason` field
+- `reason` field has the value `Bad credentials`
 - Response body does not contain the `token` field
 
 ## Test case A-4: Create token with both invalid credentials
@@ -100,7 +104,7 @@ Content-Type: `application/json`\
 - Auth API is available
 
 **Headers:**
-Content-Type: `application/json`\
+Content-Type: `application/json`
 **Body:**
 ```
 {
@@ -116,7 +120,8 @@ Content-Type: `application/json`\
 
 **Expected Result:**
 - Status code is `200`
-- Response body contains the `reason` field with value `Bad credentials`
+- Response body contains the `reason` field
+- `reason` field has the value `Bad credentials`
 - Response body does not contain the `token` field
 
 ## Test case A-5: Create token without username
@@ -126,7 +131,7 @@ Content-Type: `application/json`\
 - Auth API is available
 
 **Headers:**
-Content-Type: `application/json`\
+Content-Type: `application/json`
 **Body:**
 ```
 {
@@ -141,7 +146,8 @@ Content-Type: `application/json`\
 
 **Expected Result:**
 - Status code is `200`
-- Response body contains the `reason` field with value `Bad credentials`
+- Response body contains the `reason` field
+- `reason` field has the value `Bad credentials`
 - Response body does not contain the `token` field
 
 ## Test case A-6: Create token without password
@@ -151,7 +157,7 @@ Content-Type: `application/json`\
 - Auth API is available
 
 **Headers:**
-Content-Type: `application/json`\
+Content-Type: `application/json`
 **Body:**
 ```
 {
@@ -166,17 +172,18 @@ Content-Type: `application/json`\
 
 **Expected Result:**
 - Status code is `200`
-- Response body contains the `reason` field with value `Bad credentials`
+- Response body contains the `reason` field
+- `reason` field has the value `Bad credentials`
 - Response body does not contain the `token` field
 
-## Test case A-7: Create token with empty request body
+## Test case A-7: Create token with an empty JSON object
 **Endpoint:** `POST /auth`
 
 **Preconditions:**
 - Auth API is available
 
 **Headers:**
-Content-Type: `application/json`\
+Content-Type: `application/json`
 **Body:**
 ```
 {}
@@ -189,10 +196,11 @@ Content-Type: `application/json`\
 
 **Expected Result:**
 - Status code is `200`
-- Response body contains the `reason` field with value `Bad credentials`
+- Response body contains the `reason` field
+- `reason` field has the value `Bad credentials`
 - Response body does not contain the `token` field
 
-## Test case A-8: Create token with unsupported Content-type
+## Test case A-8: Create token with unsupported Content-Type
 **Endpoint:** `POST /auth`
 
 **Preconditions:**
@@ -211,9 +219,37 @@ Content-Type: `application/xml`
 **Steps:**
 1. Send a `POST` request to `/auth`
 2. Check the response status code
-3. Check the response body structure
+3. Check the response body content
 
 **Expected Result:**
 - Status code is `400`
-- Response body contains the `reason` field with value `Bad credentials`
+- Response body is `Bad Request`
+- Response body does not contain the `token` field
+
+
+## Test case A-9: Create token with SQL injection attempt in username
+**Endpoint:** `POST /auth`
+
+**Preconditions:**
+- Auth API is available
+
+**Headers:**
+Content-Type: `application/json`
+**Body:**
+```
+{
+  "username": "' OR '1' = '1' --",
+  "password": "password123"
+}
+```
+
+**Steps:**
+1. Send a `POST` request to `/auth`
+2. Check the response status code
+3. Check the response body structure
+
+**Expected Result:**
+- Status code is `200`
+- Response body contains the `reason` field
+- `reason` field has the value `Bad credentials`
 - Response body does not contain the `token` field

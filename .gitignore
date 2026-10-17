@@ -2,3 +2,5 @@
 __pycache__/
 allure-results/
 tests/__pycache__/
+.env
+book_env/

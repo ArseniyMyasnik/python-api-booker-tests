@@ -4,6 +4,7 @@ import pytest
 from dotenv import load_dotenv
 
 from api.auth_api import AuthApi
+from api.health_api import HealthApi
 
 load_dotenv()
 
@@ -19,3 +20,7 @@ def base_url():
 @pytest.fixture(scope='session')
 def auth_api(base_url):
     return AuthApi(base_url)
+
+@pytest.fixture(scope='session')
+def health_api(base_url):
+    return HealthApi(base_url)

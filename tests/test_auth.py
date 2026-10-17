@@ -1,4 +1,3 @@
-import requests
 import allure
 
 def assert_bad_credentials(response):

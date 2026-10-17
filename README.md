@@ -6,11 +6,13 @@ Automated API tests for the demo booking website [Restful-booker](https://restfu
 
 This project includes automated tests for:
 - Auth API: `POST /auth`
-- Valid and invalid credentials
-- Missing required fields
-- Empty JSON object
-- Unsupported `Content-Type`
-- SQL injection attempt
+  - Valid and invalid credentials
+  - Missing required fields
+  - Empty JSON object
+  - Unsupported `Content-Type`
+  - SQL injection attempt
+- Health Check API: `GET /ping`
+  - API availability check
 
 ## Technology Stack
 
@@ -25,11 +27,14 @@ This project includes automated tests for:
 ```text
 python-api-booker-tests/
 ├── api/
-│   └── auth_api.py            # API client for POST /auth requests
+│   ├── auth_api.py            # API client for POST /auth requests
+│   └── health_api.py          # API client for GET /ping requests
 ├── tests/
-│   └── test_auth.py           # Automated tests for the Auth API
+│   ├── test_auth.py           # Automated tests for the Auth API
+│   └── test_ping.py           # Automated tests for the Health Check API
 ├── test_cases/
-│   └── auth_test_cases        # Manual test cases for the Auth API
+│   ├── auth_test_cases.md     # Manual test cases for the Auth API
+│   └── health_check_cases.md  # Manual test cases for the Health Check API
 ├── conftest.py                # Shared pytest fixtures and configuration
 ├── pytest.ini                 # Pytest settings
 ├── requirements.txt           # Project dependencies

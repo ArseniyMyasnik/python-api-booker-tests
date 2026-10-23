@@ -30,7 +30,9 @@ def auth_api(base_url):
 @pytest.fixture
 def correct_auth_token(auth_api):
     response = auth_api.create_token({"username": "admin", "password": "password123"})
-    assert response.status_code == 200
+    assert (
+        response.status_code == 200
+    ), f"Expected status code 200, got {response.status_code}"
     return response.json()["token"]
 
 
@@ -52,3 +54,41 @@ def create_booking_api(base_url):
 @pytest.fixture(scope="session")
 def delete_booking_api(base_url):
     return DeleteBookingApi(base_url)
+
+
+@pytest.fixture
+def booking_factory(create_booking_api, delete_booking_api, correct_auth_token):
+
+    created_booking_ids = []
+
+    def create_test_booking(payload):
+        response = create_booking_api.create_booking(payload)
+
+        assert (
+            response.status_code == 200
+        ), f"Expected status code 200, got {response.status_code}"
+
+        response_body = response.json()
+
+        assert (
+            "bookingid" in response_body
+        ), f'Expected "bookingid" in response body, got {response_body}'
+        assert isinstance(
+            response_body["bookingid"], int
+        ), f'Expected "bookingid" to be an integer, got {type(response_body["bookingid"])}'
+
+        post_id = response_body["bookingid"]
+        created_booking_ids.append(post_id)
+
+        return post_id
+
+    yield create_test_booking
+
+    for booking_id in created_booking_ids:
+        response = delete_booking_api.delete_booking(
+            booking_id=booking_id, auth_token=correct_auth_token
+        )
+
+        assert (
+            response.status_code == 201
+        ), f"Expected status code 201, got {response.status_code}"

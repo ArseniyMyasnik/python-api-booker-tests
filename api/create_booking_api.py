@@ -8,5 +8,7 @@ class CreateBookingApi:
         self.timeout = timeout
 
     def create_booking(self, payload):
-        response = requests.post(url=f"{self.base_url}/booking/", json=payload)
+        response = requests.post(
+            url=f"{self.base_url}/booking/", json=payload, timeout=self.timeout
+        )
         return response

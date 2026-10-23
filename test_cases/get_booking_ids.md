@@ -21,7 +21,9 @@ This document covers test cases for the get booking IDs API
 1. Create a booking using `POST /booking` with the first name, last name, and dates stated in the test case
 2. Save `bookingid` from the response
 3. Obtain a valid token through `POST /auth` before cleanup
-4. Delete the created booking with `DELETE /booking/{bookingid}` and header `Cookie: token=<token>`
+4. Delete the created booking with `DELETE /booking/{bookingid}` and header `Cookie: token=<token>`
+
+Automated tests append a short UUID suffix to generated first and last names. The values used in endpoint examples below show the readable base value.
 
 ---
 
@@ -98,7 +100,7 @@ This document covers test cases for the get booking IDs API
 **Expected result:**
 - Creation and filter requests return `200`
 - The filter response is non-empty and contains integer booking IDs
-- Every returned booking has `bookingdates.checkin` greater than or equal to `2026-10-13`
+- Every returned booking has `bookingdates.checkin` greater than or equal to `2026-10-12`
 - Deletion returns `201`
 
 ## Test case GBI-5: Get booking IDs by check-out date
@@ -118,7 +120,7 @@ This document covers test cases for the get booking IDs API
 **Expected result:**
 - Creation and filter requests return `200`
 - The filter response is non-empty and contains integer booking IDs
-- Every returned booking has `bookingdates.checkout` greater than or equal to `2026-10-20`
+- Every returned booking has `bookingdates.checkout` greater than or equal to `2026-10-19`
 - Deletion returns `201`
 
 ## Test case GBI-6: Get booking IDs by first name and check-in date
@@ -139,7 +141,7 @@ This document covers test cases for the get booking IDs API
 - Creation and filter requests return `200`
 - The filter response is a non-empty array of integer booking IDs.
 - Each returned booking has the requested first name
-- Each returned booking has check-in date greater than or equal to `2026-10-13`
+- Each returned booking has check-in date greater than or equal to `2026-10-12`
 - Deletion returns `201`
 
 ## Test case GBI-7: Get booking IDs by last name and check-out date
@@ -160,7 +162,7 @@ This document covers test cases for the get booking IDs API
 - Creation and filter requests return `200`
 - The filter response is a non-empty array of integer booking IDs.
 - Each returned booking has the requested last name
-- Each returned booking has check-out date greater than or equal to `2026-10-20`
+- Each returned booking has check-out date greater than or equal to `2026-10-19`
 - Deletion returns `201`
 
 ## Test case GBI-8: Get booking IDs using all filters
@@ -181,7 +183,7 @@ This document covers test cases for the get booking IDs API
 - Creation and filter requests return `200`
 - The filter response is a non-empty array of integer booking IDs.
 - Every returned booking has `firstname` equal to `Autotest_GBI-8_first` and `lastname` equal to `Autotest_GBI-8_last`.
-- Every returned booking has check-in date greater than or equal to `2026-10-13` and check-out date greater than or equal to `2026-10-20`.
+- Every returned booking has check-in date greater than or equal to `2026-10-12` and check-out date greater than or equal to `2026-10-19`.
 - Deletion returns `201`
 
 ## Test case GBI-9: Check-in filter boundary: one day before
